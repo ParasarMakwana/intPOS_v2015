@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+       xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+       xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+
+  <Bundle Name="intPOS - Frontend"
+          Version="2.2"
+          Manufacturer="Intnet Inc"
+          UpgradeCode="A5CEF9DD-F44D-46ED-AA1A-C7CE590EC9F0"
+          IconSourceFile="intPOS.ico" >
+    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+      <bal:WixStandardBootstrapperApplication LogoFile="intPOS.bmp" LicenseFile="eula.rtf" LogoSideFile="intPOS.bmp"/>
+    </BootstrapperApplicationRef>
+    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
+    <Chain>
+      <PackageGroupRef Id="Netfx4Full"/>
+      <PackageGroupRef Id="SQLCompactx64" />
+      <PackageGroupRef Id="OPOS1_14_171" />
+      <PackageGroupRef Id="PosForDotNet" />
+      
+      <RollbackBoundary />
+      <MsiPackage Id="intPOS" SourceFile="..\Setup_Frontend\Debug\Setup_Frontend.msi" DisplayName="intPOS - Frontend (Version - 2.2)" Compressed="yes" Vital="yes" >
+      </MsiPackage>
+    </Chain>
+  </Bundle>
+
+  <Fragment>
+    <util:RegistrySearch Root="HKLM"
+                         Key="Software\Microsoft\NET Framework Setup\NDP\v4\Full"
+                         Value="Version"
+                         Variable="DotNet461Full_Release" />
+
+    <util:RegistrySearch Root="HKLM"
+                         Key="SOFTWARE\Microsoft\NET Framework Setup\OS Integration"
+                         Value="Version"
+                         Variable="DotNet461Full_OSIntegrated"
+                         Win64="yes" />
+
+    <util:RegistrySearch Root="HKLM"
+                     Key="SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER"
+                     Result="exists"
+                     Variable="SQLServer2008R2Installed" />
+
+    <PackageGroup Id ="Netfx4Full">
+      <ExePackage Id ="Netfx4Full"
+                  DisplayName ="Microsoft .NET Framework 4.6.1"
+                  Compressed ="no"
+                  Cache ="yes"
+                  PerMachine ="yes"
+                  Permanent ="yes"
+                  Protocol ="netfx4"
+                  Vital ="yes"
+                  RepairCommand ="/q /norestart"
+                  UninstallCommand ="/q /norestart"
+                  Name ="prerequisites\.net Framework 4.6.1\NDP461-KB3102436-x86-x64-AllOS-ENU.exe"
+                  SourceFile ="NDP461-KB3102436-x86-x64-AllOS-ENU.exe"
+                  InstallCommand ="/q /norestart"
+                  DetectCondition ="DotNet461Full_Release"
+                />
+    </PackageGroup>
+
+    <PackageGroup Id="SQLCompactx64">
+      <MsiPackage Id="SQLCompactx64"
+               DisplayName="Microsoft SQL Server Compact 4.1 SP(x64)"
+               DisplayInternalUI="no"
+               Visible="yes"
+               SourceFile="SSCERuntime_x64-ENU.msi"
+               Name="prerequisites\Sql Server Compact Edition 4.1\SSCERuntime_x64-ENU.msi"
+               InstallCondition="VersionNT64"
+               Cache="no"
+               Compressed="no"
+               Permanent="yes"/>
+    </PackageGroup>
+
+    <PackageGroup Id="OPOS1_14_171">
+      <MsiPackage Id="OPOS1_14_171"
+               DisplayName="OPOS Driver"
+               DisplayInternalUI="no"
+               Visible="yes"
+               SourceFile="OPOS 1_14_171.msi"
+               Name="prerequisites\OPOS 1_14_171.msi"
+               InstallCondition="VersionNT64"
+               Cache="no"
+               Compressed="no"
+               Permanent="yes"/>
+    </PackageGroup>
+    
+    <PackageGroup Id="PosForDotNet">
+      <MsiPackage Id="PosForDotNet"
+               DisplayName="Pos For DotNet-1.14.1"
+               DisplayInternalUI="no"
+               Visible="yes"
+               SourceFile="PosForDotNet-1.14.1.msi"
+               Name="prerequisites\PosForDotNet-1.14.1.msi"
+               InstallCondition="VersionNT64"
+               Cache="no"
+               Compressed="no"
+               Permanent="yes"/>
+    </PackageGroup>
+
+
+  </Fragment>
+
+</Wix>

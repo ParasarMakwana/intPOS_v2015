@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="28d869b0a75c48f29c385d7cf3e0c0a4" Name="Diagram1" ZoomLevel="82" ShowGrid="false">
+        <EntityTypeShape EntityType="SFPOSModel.tbl_City" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_Country" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_InvoiceMaster" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_LedgerTypeMaster" Width="1.5" PointX="4.75" PointY="6.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_LoginMaster" Width="1.5" PointX="6.75" PointY="5.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_PostedPurchaseHeader" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_PostedPurchaseLine" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ProductSaleDiscountMaster" Width="1.5" PointX="10.75" PointY="6.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ProductSalePriceMaster" Width="1.5" PointX="10.75" PointY="10.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ProductUoM" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_PurchaseHeader" Width="1.5" PointX="12.75" PointY="9.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_PurchaseLine" Width="1.5" PointX="4.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_RolePermission" Width="1.5" PointX="12.75" PointY="13.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ShortcutkeyMaster" Width="1.5" PointX="14.75" PointY="5.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_State" Width="1.5" PointX="14.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_TaxGroupMaster" Width="1.5" PointX="14.75" PointY="14.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_TaxRateMaster" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_UnitMeasureMaster" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_SectionMaster" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_SettingMaster" Width="1.5" PointX="19.375" PointY="19.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_StoreMaster" Width="1.5" PointX="9.375" PointY="14.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_TillBalancing" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ExceptionLog" Width="1.5" PointX="23.375" PointY="10.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ProductVendorMaster" Width="1.5" PointX="21.375" PointY="23.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_PriceHistory" Width="1.5" PointX="23.375" PointY="22.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_SyncLog" Width="1.5" PointX="17.375" PointY="14.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_UpdateLog" Width="1.5" PointX="19.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ReleaseMaster" Width="1.5" PointX="19.375" PointY="12.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_LottoTrans" Width="1.5" PointX="25.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_CustomerAppliedCoupon" Width="1.5" PointX="13.375" PointY="24.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ProductLedger" Width="1.5" PointX="2.75" PointY="20.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_DepartmentMaster" Width="1.5" PointX="7.375" PointY="24.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_CounterMaster" Width="1.5" PointX="11.375" PointY="17.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_RoleMaster" Width="1.5" PointX="7.375" PointY="20.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_FilterColumns" Width="1.5" PointX="9.375" PointY="23.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_CustomerMaster" Width="1.5" PointX="17.375" PointY="24.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_VendorMaster" Width="1.5" PointX="25.375" PointY="19.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_TillStatusReport" Width="1.5" PointX="25.375" PointY="25.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_MenuMaster" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_EmployeeMaster" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_ProductMaster" Width="1.5" PointX="25.375" PointY="5.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_OrderDetail" Width="1.5" PointX="27.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_TransSuspenMaster" Width="1.5" PointX="0.75" PointY="27.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_OrderEPXLog" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_PaymentTrans" Width="1.5" PointX="13.375" PointY="18.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_OrderMaster" Width="1.5" PointX="21.375" PointY="14.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_CouponAppliedDepartment" Width="1.5" PointX="15.375" PointY="18.75" />
+        <EntityTypeShape EntityType="SFPOSModel.tbl_CouponMaster" Width="1.5" PointX="3.375" PointY="27.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

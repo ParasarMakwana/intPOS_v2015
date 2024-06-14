@@ -1,0 +1,404 @@
+﻿Live DB :
+
+alter table tbl_productmaster
+add FSEligibleAmount decimal(18,2)
+
+update tbl_ProductMaster
+set FSEligibleAmount = Price
+where IsFoodStamp = 1 and IsGroupPrice = 0 and IsActive = 1 and IsDelete = 0
+----------------------------------------------
+
+ALTER PROCEDURE [dbo].[SP_GetProductList]          
+(          
+@SearchString NVARCHAR(250),        
+@IsDynamic bit = 0          
+)          
+AS          
+BEGIN          
+ IF (@SearchString=''  and @IsDynamic = 0)        
+  BEGIN          
+   SET NOCOUNT ON;          
+   SELECT ROW_NUMBER() OVER          
+    (          
+     ORDER BY ProductName           
+    ) AS RowNumber,          
+    PM.ProductID,PM.ProductName,PM.UPCCode,PM.CertCode,          
+    PM.DepartmentID,PM.SectionID,PM.UnitMeasureID,PM.Price,PM.TaxGroupID,PM.Image,PM.LabeledPrice,          
+    PM.IsActive,PM.IsDelete,PM.CreatedDate,PM.CreatedBy,PM.UpdatedDate,PM.UpdatedBy,PM.ProductVendorID,          
+    PM.IsFoodStamp,PM.AgeVerification,PM.IsScaled,PM.TareWeight,PM.GroupQty,PM.GroupPrice,          
+    PM.LinkedUPCCode,PM.CaseQty,PM.CasePrice,CM.DepartmentName,SCM.SectionName,UOM.UnitMeasureCode,          
+    TGM.TaxGroupName,PM.UnitCost,PM.IsGroupPrice,PM.Pack,Pm.Size,PM.SecondaryPLU,PM.PalletQTY,PM.CountryofOrigin,VM.VendorName,PM.FSEligibleAmount          
+   FROM           
+     tbl_ProductMaster PM (NOLOCK)          
+     LEFT JOIN tbl_DepartmentMaster CM (NOLOCK) On CM.DepartmentID = PM.DepartmentID          
+     LEFT JOIN tbl_SectionMaster SCM (NOLOCK) ON SCM.SectionID = PM.SectionID          
+     LEFT JOIN tbl_UnitMeasureMaster UOM (NOLOCK) ON UOM.UnitMeasureID = PM.UnitMeasureID          
+     LEFT JOIN tbl_TaxGroupMaster TGM (NOLOCK) ON TGM.TaxGroupID = PM.TaxGroupID    
+  LEFT JOIN tbl_VendorMaster VM (NOLOCK) ON VM.VendorID = PM.ProductVendorID          
+   WHERE           
+    PM.IsDelete = 0            
+   ORDER BY PM.ProductID          
+  END          
+ ELSE if(@IsDynamic = 0)         
+   BEGIN          
+   SET NOCOUNT ON;          
+   SELECT ROW_NUMBER() OVER          
+    (          
+     ORDER BY ProductName           
+    ) AS RowNumber,          
+    PM.ProductID,PM.ProductName,PM.UPCCode,PM.CertCode,          
+    PM.DepartmentID,PM.SectionID,PM.UnitMeasureID,PM.Price,PM.TaxGroupID,PM.Image,PM.LabeledPrice,          
+    PM.IsActive,PM.IsDelete,PM.CreatedDate,PM.CreatedBy,PM.UpdatedDate,PM.UpdatedBy,PM.ProductVendorID,          
+    PM.IsFoodStamp,PM.AgeVerification,PM.IsScaled,PM.TareWeight,PM.GroupQty,PM.GroupPrice,          
+    PM.LinkedUPCCode,PM.CaseQty,PM.CasePrice,CM.DepartmentName,SCM.SectionName,UOM.UnitMeasureCode,          
+    TGM.TaxGroupName,PM.UnitCost,PM.IsGroupPrice,PM.Pack,Pm.Size,PM.SecondaryPLU,PM.PalletQTY,PM.CountryofOrigin,VM.VendorName,PM.FSEligibleAmount         
+   FROM           
+     tbl_ProductMaster PM (NOLOCK)          
+     LEFT JOIN tbl_DepartmentMaster CM (NOLOCK) On CM.DepartmentID = PM.DepartmentID          
+     LEFT JOIN tbl_SectionMaster SCM (NOLOCK) ON SCM.SectionID = PM.SectionID          
+     LEFT JOIN tbl_UnitMeasureMaster UOM (NOLOCK) ON UOM.UnitMeasureID = PM.UnitMeasureID          
+     LEFT JOIN tbl_TaxGroupMaster TGM (NOLOCK) ON TGM.TaxGroupID = PM.TaxGroupID     
+  LEFT JOIN tbl_VendorMaster VM (NOLOCK) ON VM.VendorID = PM.ProductVendorID            
+   WHERE           
+    PM.IsDelete = 0 AND (UPCCode Like @SearchString +'%' OR ProductName Like @SearchString +'%')
+   ORDER BY PM.ProductID          
+  END          
+  ELSE if(@IsDynamic = 1)         
+  BEGIN        
+  DECLARE @Query VARCHAR(2000)        
+  SET @Query = 'SELECT ROW_NUMBER() OVER          
+    (          
+     ORDER BY ProductName           
+    ) AS RowNumber,          
+    PM.ProductID,PM.ProductName,PM.UPCCode,PM.CertCode,          
+    PM.DepartmentID,PM.SectionID,PM.UnitMeasureID,PM.Price,PM.TaxGroupID,PM.Image,PM.LabeledPrice,          
+    PM.IsActive,PM.IsDelete,PM.CreatedDate,PM.CreatedBy,PM.UpdatedDate,PM.UpdatedBy,PM.ProductVendorID,          
+    PM.IsFoodStamp,PM.AgeVerification,PM.IsScaled,PM.TareWeight,PM.GroupQty,PM.GroupPrice,          
+    PM.LinkedUPCCode,PM.CaseQty,PM.CasePrice,CM.DepartmentName,SCM.SectionName,UOM.UnitMeasureCode,          
+    TGM.TaxGroupName,PM.UnitCost,PM.IsGroupPrice,PM.Pack,Pm.Size,PM.SecondaryPLU,PM.PalletQTY,PM.CountryofOrigin,VM.VendorName,PM.FSEligibleAmount          
+   FROM       
+     tbl_ProductMaster PM (NOLOCK)          
+     LEFT JOIN tbl_DepartmentMaster CM (NOLOCK) On CM.DepartmentID = PM.DepartmentID          
+  LEFT JOIN tbl_SectionMaster SCM (NOLOCK) ON SCM.SectionID = PM.SectionID          
+     LEFT JOIN tbl_UnitMeasureMaster UOM (NOLOCK) ON UOM.UnitMeasureID = PM.UnitMeasureID          
+     LEFT JOIN tbl_TaxGroupMaster TGM (NOLOCK) ON TGM.TaxGroupID = PM.TaxGroupID    
+  LEFT JOIN tbl_VendorMaster VM (NOLOCK) ON VM.VendorID = PM.ProductVendorID          
+   WHERE           
+    PM.IsDelete = 0  ' + @SearchString        
+        
+  EXEC(@Query)            
+  END        
+        
+END          
+          
+--exec SP_GetProductList ''
+
+-----------------------------------------------
+
+ALTER PROCEDURE [dbo].[SP_ScanUPCCode]        
+(        
+@UPCCode  nvarchar(25)        
+)        
+AS        
+BEGIN        
+ SET NOCOUNT ON;        
+ SELECT PM.ProductID,PM.UPCCode,PM.ProductName, PM.Price as SellPrice,PM.DepartmentID,PM.SectionID,        
+     PM.TaxGroupID,PM.AgeVerification,PM.TareWeight,PM.LabeledPrice,PM.LinkedUPCCode,        
+     PM.IsScaled AS IsScale,PM.GroupQty,PM.GroupPrice,PM.IsFoodStamp,PM.FSEligibleAmount,PM.CaseQty,PM.CasePrice,        
+     PM.UnitMeasureID,PM.IsGroupPrice,DM.IsForceTax AS IsForceTaxDept,DM.ForcedTaxSection AS ForcedTaxSection,DM.ForcedTaxSuffix AS ForcedTaxSuffix     
+ FROM tbl_ProductMaster AS PM (NOLOCK)       
+ INNER JOIN tbl_DepartmentMaster AS DM ON PM.DepartmentID=DM.DepartmentID       
+ WHERE PM.UPCCode = @UPCCode AND PM.IsDelete = 0 AND PM.IsActive = 1        
+END        
+--exec SP_ScanUPCCode '0001100011208' 
+
+-------------------------------------------------
+
+ALTER PROCEDURE [dbo].[SP_ReciptDetails]
+(
+@OrderID bigint,
+@EMPLOYEEID BIGINT,
+@Reprint bit = 0,
+@CounterIP varchar(15)
+)
+AS
+if(@Reprint = 0)
+begin
+	SELECT 
+		OM.IsCancel,OM.OrderID,OM.TotalAmount,OM.TaxAmount,OM.GrossAmount,OM.CreatedDate
+		,OM.PaymentMethodID ,OM.OrdNo,OM.CashAmount,OM.CheckAmount,OM.CreditCardAmount
+		,OM.FoodStampAmount,OM.RefundAmount,OM.Balance,OM.ChangeAmount,OM.TaxableAmount
+		,OD.UPCCode,OD.ProductName,OD.Quantity,OD.SellPrice,OD.Discount,OD.finalPrice,OD.IsScale,OD.IsManWTRefund as ManWT
+		,ISNULL(OD.GroupQty,0) AS GroupQty ,ISNULL(OD.GroupPrice,0) AS GroupPrice,ISNULL(OD.CaseQty,0) AS CaseQty
+		,ISNULL(OD.CasePrice,0) AS CasePrice ,OM.CouponCode,OM.CouponDiscAmt
+		,ISNULL(OD.DiscountApplyed,0) AS DiscountApplyed,OM.TaxExempted ,OD.CasePriceApplied
+		,isnull(OD.IsFoodStamp,0) as IsFoodStamp,isnull(OD.IsTax,0) as IsTax
+		,SM.StoreName,SM.Address AS SMAddress,SM.Address2 AS SAddress2
+		,(Select CityName from tbl_City where CityID =  SM.City )AS SCity
+		,SM.ZipCode AS SZipCode,SM.Phone AS SPhone,SM.Fax AS SFax
+		,EM.FirstName,OD.OrderDetailID, OEL.ResponseValue,OEL.TVR,OEL.CardType,OEL.EmvAid,OEL.TSI,Convert(Decimal(7,2),
+		IIF(OD.ProductID = 0,OD.finalPrice,ISNULL(PM.FSEligibleAmount,0.00) * OD.Quantity)) AS FSEligibleAmount
+	FROM tbl_OrderMaster AS OM (NOLOCK)
+		INNER JOIN tbl_OrderDetail (NOLOCK) AS OD ON OM.OrderID=OD.OrderID
+		INNER JOIN tbl_ProductMaster (NOLOCK) AS PM ON PM.ProductID = OD.ProductID
+		INNER JOIN tbl_StoreMaster AS SM (NOLOCK) ON OM.StoreID=SM.StoreID
+		INNER JOIN tbl_EmployeeMaster AS EM (NOLOCK) ON EM.EmployeeID = OD.CreatedBy
+		LEFT JOIN tbl_OrderEPXLog As OEL (NOLOCK) ON OEL.OrderId = OM.OrderID
+	WHERE OM.OrderID=@OrderID AND EM.EmployeeID = @EMPLOYEEID
+end
+else 
+begin
+	SELECT @OrderID = MAX(OrderID) from tbl_OrderMaster where CounterIP = @CounterIP AND CreatedBy = @EMPLOYEEID
+	
+	SELECT 
+		OM.IsCancel,OM.OrderID,OM.TotalAmount,OM.TaxAmount,OM.GrossAmount,OM.CreatedDate
+		,OM.PaymentMethodID,OM.OrdNo,OM.CashAmount,OM.CheckAmount,OM.CreditCardAmount
+		,OM.FoodStampAmount,OM.RefundAmount,OM.Balance,OM.ChangeAmount
+		,OM.TaxableAmount,OM.TaxExempted ,OD.CasePriceApplied
+		,OD.UPCCode,OD.ProductName,OD.Quantity,OD.SellPrice,OD.Discount,OD.finalPrice,OD.IsScale,OD.IsManWTRefund as ManWT
+		,ISNULL(OD.GroupQty,0) AS GroupQty ,ISNULL(OD.GroupPrice,0) AS GroupPrice
+		,ISNULL(OD.CaseQty,0) AS CaseQty
+		,ISNULL(OD.CasePrice,0) AS CasePrice ,OM.CouponCode,OM.CouponDiscAmt
+		,ISNULL(OD.DiscountApplyed,0) AS DiscountApplyed
+		,isnull(OD.IsFoodStamp,0) as IsFoodStamp,isnull(OD.IsTax,0) as IsTax
+		,SM.StoreName,SM.Address AS SMAddress,SM.Address2 AS SAddress2
+		,(Select CityName from tbl_City where CityID =  SM.City )AS SCity
+		,SM.ZipCode AS SZipCode,SM.Phone AS SPhone,SM.Fax AS SFax
+		,EM.FirstName,OD.OrderDetailID, OEL.ResponseValue,OEL.TVR,OEL.CardType,OEL.EmvAid,OEL.TSI,Convert(Decimal(7,2),
+		IIF(OD.ProductID = 0,OD.finalPrice,ISNULL(PM.FSEligibleAmount,0.00) * OD.Quantity)) AS FSEligibleAmount
+	FROM tbl_OrderMaster AS OM (NOLOCK)
+		INNER JOIN tbl_OrderDetail (NOLOCK) AS OD ON OM.OrderID=OD.OrderID
+		INNER JOIN tbl_ProductMaster (NOLOCK) AS PM ON PM.ProductID = OD.ProductID
+		INNER JOIN tbl_StoreMaster AS SM (NOLOCK) ON OM.StoreID=SM.StoreID
+		INNER JOIN tbl_EmployeeMaster AS EM (NOLOCK) ON EM.EmployeeID = OD.CreatedBy
+		LEFT JOIN tbl_OrderEPXLog As OEL (NOLOCK) ON OEL.OrderId = OM.OrderID
+	WHERE OM.OrderID= @OrderID AND EM.EmployeeID = @EMPLOYEEID 
+end
+
+----------------------------------------------------------------
+
+ALTER PROCEDURE [dbo].[SP_Rpt_SectionWiseSaleHistory]
+	@STOREID BIGINT,
+	@FromDate datetime,
+	@ToDate datetime
+AS
+BEGIN
+	
+	SELECT 
+		@FromDate = CONVERT(VARCHAR,CONVERT(DATE,@FromDate),23), 
+		@ToDate = CONVERT(VARCHAR,CONVERT(DATE,@ToDate),23) + ' 23:59:59.997'
+
+	SELECT ISNULL(SM.SectionID,0) AS SectionID,
+		ISNULL(DM.DepartmentID,0) AS DepartmentID,
+		ISNULL(SM.SectionName,'Undefined Section') AS SectionName,
+		ISNULL(DM.DepartmentName,'Undefined Department') AS DepartmentName,
+		SUM(OD.finalPrice 
+		--+ CASE WHEN OD.IsTax = 1 AND OD.FoodStampTotal <> OD.finalPrice AND OD.IsTaxCarry = 0 THEN OD.TaxAmount ELSE 0 END
+		) AS SalesAmount
+	FROM tbl_OrderDetail OD WITH(NOLOCK)
+		LEFT JOIN tbl_SectionMaster SM WITH(NOLOCK) ON SM.SectionID = OD.SectionID
+		LEFT JOIN tbl_DepartmentMaster DM WITH(NOLOCK) ON DM.DepartmentID = OD.DepartmentID
+	WHERE OD.CreatedDate BETWEEN @FromDate AND @ToDate
+		AND OD.StoreID = @STOREID AND OD.IsCancel = 0
+	GROUP BY SM.SectionID, DM.DepartmentID, SM.SectionName, DM.DepartmentName
+	ORDER BY CASE WHEN ISNULL(DM.DepartmentID,0) = 0 THEN 1 ELSE 0 END, DM.DepartmentID, 
+		CASE WHEN ISNULL(SM.SectionID,0) = 0 THEN 1 ELSE 0 END, SM.SectionID
+END
+
+----------------------------------------------
+
+ALTER PROCEDURE [dbo].[SP_Rpt_DepartmentWiseSaleHistory]
+	@STOREID BIGINT,
+	@FromDate datetime,
+	@ToDate datetime
+AS
+BEGIN
+
+	SELECT 
+		@FromDate = CONVERT(VARCHAR,CONVERT(DATE,@FromDate),23), 
+		@ToDate = CONVERT(VARCHAR,CONVERT(DATE,@ToDate),23) + ' 23:59:59.997'
+	
+	SELECT OD.DepartmentID AS DID,
+		SUM(OD.finalPrice 
+		--+ CASE WHEN OD.IsTax = 1 AND OD.FoodStampTotal <> OD.finalPrice AND OD.IsTaxCarry = 0 THEN OD.TaxAmount ELSE 0 END
+		)
+		AS SalesAmount
+		--, SUM(OD.finalPrice) AS FinalPrice
+	INTO #tmpDepartmentWiseSaleHistory
+	FROM tbl_OrderDetail OD WITH(NOLOCK)
+	WHERE OD.CreatedDate BETWEEN @FromDate AND @ToDate
+		AND OD.StoreID = @STOREID AND OD.IsCancel = 0
+	GROUP BY OD.DepartmentID
+	
+	SELECT ISNULL(DM.DepartmentID,0) AS DepartmentID,
+		ISNULL(DM.DepartmentName,'Undefined Department') AS DepartmentName,
+		SUM (T.SalesAmount) AS SalesAmount
+	FROM #tmpDepartmentWiseSaleHistory T
+		LEFT JOIN tbl_DepartmentMaster DM WITH(NOLOCK) ON DM.DepartmentID = T.DID
+	GROUP BY ISNULL(DM.DepartmentID,0), ISNULL(DM.DepartmentName,'Undefined Department')
+	ORDER BY CASE WHEN ISNULL(DM.DepartmentID,0) = 0 THEN 1 ELSE 0 END, DepartmentID
+
+
+
+	DROP TABLE #tmpDepartmentWiseSaleHistory
+	
+END
+
+go
+
+alter table tbl_transsuspenmaster
+add IsManWTRefund bit,
+FSEligibleAmount decimal(18, 2)
+
+go
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_GetDisplayLableData]      
+ @UPCCode NVarchar(50)       
+AS      
+BEGIN      
+ SELECT      
+  PM.ProductID,      
+  PM.ProductName,      
+  PM.UPCCode,      
+  RIGHT(PM.UPCCode, LEN(PM.UPCCode) - 1) AS Barcode,      
+  PM.Price,      
+  PM.UpdatedDate as UpdatedDate,      
+  PM.CertCode AS ItemCode,      
+  PM.SecondaryPLU,      
+  PM.GroupPrice,      
+  PM.GroupQty,      
+  PM.IsGroupPrice,      
+  PM.CasePrice,      
+  PM.CaseQty,      
+  PM.Size AS Data1,
+  NULLIF(PM.CountryofOrigin,'') CountryofOrigin,      
+  '' AS Data2,      
+  VM.VendorName, VM.VendorID as VendorCode, PM.IsScaled    
+ FROM       
+  tbl_ProductMaster AS PM      
+  Left JOIN tbl_VendorMaster AS VM ON PM.ProductVendorID=VM.VendorID      
+ WHERE PM.UPCCode=@UPCCode  and PM.IsDelete=0   
+        
+ END      
+--EXEC SP_GetDisplayLableData '0471000828594' 
+
+go
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_GetTransSuspendList]
+(
+@TransSuspendCode nvarchar(20)
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		TM.TransSuspendID,TM.TransSuspendCode,TM.ProductID,TM.ProductName,TM.UPCCode,TM.Quantity,TM.SellPrice
+		,TM.FinalPrice,TM.TotalAmount,TM.Tax,TM.GrossAmount,TM.IsScale,TM.IsFoodStamp,TM.IsTax
+		,TM.TotalTaxAmount AS TaxAmount,TM.DepartmentID,TM.SectionID,GroupQty,GroupPrice,CaseQty,CasePrice
+		,TM.DiscountApplyed,TM.Status,TM.StoreID,TM.CreatedBy,TM.CreatedDate,TM.IsDelete,TM.CasePriceApplied
+		,SM.StoreName,SM.Address AS SMAddress,SM.Address2 AS SAddress2
+		,SM.ZipCode AS SZipCode,SM.Phone AS SPhone,SM.Fax AS SFax
+		,EM.FirstName,TM.IsManWTRefund, TM.FSEligibleAmount
+	FROM tbl_TransSuspenMaster AS TM (NOLOCK)
+		INNER JOIN tbl_StoreMaster AS SM (NOLOCK) ON TM.StoreID = SM.StoreID
+		INNER JOIN tbl_EmployeeMaster AS EM (NOLOCK) ON EM.EmployeeID = TM.CreatedBy
+	WHERE TM.TransSuspendCode=@TransSuspendCode 
+	 and TM.IsDelete = 0
+END
+ --EXEC SP_GetTransSuspendList 'TS191129110553'
+
+
+ go
+
+
+ 
+GO
+SET IDENTITY_INSERT [dbo].[tbl_MenuMaster] ON 
+GO
+INSERT [dbo].[tbl_MenuMaster] ([MenuID], [MenuName], [MenuType], [SortNo]) VALUES (20, 'Daily Management Report', 'BE', 20)
+GO
+INSERT [dbo].[tbl_MenuMaster] ([MenuID], [MenuName], [MenuType], [SortNo]) VALUES (21, 'Deposit Verifier Report', 'BE', 21)
+GO
+SET IDENTITY_INSERT [dbo].[tbl_MenuMaster] OFF
+GO
+
+
+GO
+SET IDENTITY_INSERT [dbo].[tbl_MenuMaster] ON 
+GO
+INSERT [dbo].[tbl_MenuMaster] ([MenuID], [MenuName], [MenuType], [SortNo]) VALUES (22, 'Deposit Verification', 'BE', 22)
+GO
+SET IDENTITY_INSERT [dbo].[tbl_MenuMaster] OFF
+GO
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_GetTransSuspendList]    Script Date: 22-04-2022 10.58.26 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_GetTransSuspendList]
+(
+@TransSuspendCode nvarchar(20)
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		TM.TransSuspendID,TM.TransSuspendCode,TM.ProductID,TM.ProductName,TM.UPCCode,TM.Quantity,TM.SellPrice
+		,TM.FinalPrice,TM.TotalAmount,TM.Tax,TM.GrossAmount,TM.IsScale,TM.IsFoodStamp,TM.IsTax
+		,TM.TotalTaxAmount AS TaxAmount,TM.DepartmentID,TM.SectionID,GroupQty,GroupPrice,CaseQty,CasePrice
+		,TM.DiscountApplyed,TM.Status,TM.StoreID,TM.CreatedBy,TM.CreatedDate,TM.IsDelete,TM.CasePriceApplied
+		,SM.StoreName,SM.Address AS SMAddress,SM.Address2 AS SAddress2
+		,SM.ZipCode AS SZipCode,SM.Phone AS SPhone,SM.Fax AS SFax
+		,EM.FirstName,TM.IsManWTRefund as ManWT, TM.FSEligibleAmount
+	FROM tbl_TransSuspenMaster AS TM (NOLOCK)
+		INNER JOIN tbl_StoreMaster AS SM (NOLOCK) ON TM.StoreID = SM.StoreID
+		INNER JOIN tbl_EmployeeMaster AS EM (NOLOCK) ON EM.EmployeeID = TM.CreatedBy
+	WHERE TM.TransSuspendCode=@TransSuspendCode 
+	 and TM.IsDelete = 0
+END
+ --EXEC SP_GetTransSuspendList 'TS191129110553'
+
+ --TS190515173650
+ go
+
+
+===========================================================================================
+
+Local SDF File :
+
+alter table tbl_productmaster
+add FSEligibleAmount decimal(18,2)
+
+update tbl_ProductMaster
+set FSEligibleAmount = Price
+where IsFoodStamp = 1 and IsGroupPrice = 0 and IsActive = 1 and IsDelete = 0
+
+
+alter table tbl_OrderDetail
+add ManWT bit
+===========================================================================================
+
+SQLite File :
+
+alter table tbl_OrderItemsInCart
+add FSEligibleAmount decimal(18,2)
+
+go
+
+alter table tbl_transsuspenmaster
+add IsManWTRefund bit,
+FSEligibleAmount decimal(18, 2)

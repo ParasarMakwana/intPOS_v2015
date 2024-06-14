@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="intPOS" Language="1033" Version="2.2" Manufacturer="-" UpgradeCode="6cef0bf5-5600-4ec9-94c9-f5e44c6f713c">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+    
+    	<Feature Id="ProductFeature" Title="intPOSFullVersion" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+
+    </Feature>
+    <!--<Feature Id="intPOSFrontend" Title="intPOSFrontend" Level="2">
+      <ComponentGroupRef Id="intPOSFrontend" />
+    </Feature>-->
+   
+   <UIRef Id="WixUI_Mondo"/>
+  
+	</Product>
+
+  
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="intPOSFullVersion" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Executable" Guid="3252A379-9249-4DB4-9F7F-C6A10F68F88A">
+        <File Id="intPOSFrontend1" Name="intPOS_Frontend.exe" Source="prerequisites\intPOS_Frontend.exe" Vital="yes" />
+        <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+    <!--<ComponentGroup Id="intPOSFrontend" Directory="INSTALLFOLDER">
+      <Component Id="intPOSFrontend" Guid="3252A379-9249-4DB4-9F7F-C6A10F68F88B">
+        <File Id="intPOSFrontend" Name="intPOS_Frontend.exe" Source="prerequisites\intPOS_Frontend.exe" Vital="yes" />    
+      </Component>
+    </ComponentGroup>-->
+  </Fragment>
+</Wix>

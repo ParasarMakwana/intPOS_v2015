@@ -1,0 +1,24 @@
+intPOS Software License Agreement
+1. This is an agreement between the Licensor, the owner and seller of the Retail Software POS Professional  (the “intPOS (Version - 2.3.0)”) and the Licensee, the one who purchased the Software from shareit.com and is being licensed to use the said Software, effective upon purchase of the said Software.
+
+2. Licensee acknowledges that this is only a limited nonexclusive license. Licensor is and remains the owner of all titles, rights, and interests in the Software.
+3. This License permits Licensee to install the Software on more than one computer system, with unlimited use, provided that the same registered address is used. The Licensee will not make copies of the Software or allow copies of the Software to be made by others, unless authorized by this License Agreement. Licensee may make copies of the Software for backup purposes only. This License shall be for the exclusive use of the Licensee who further agrees not to resell or distribute the said Software, in whatever form or media, whether for profit of not.
+4. The Software only works in Windows operating system, the details of which are as mentioned in the Licensor’s website. Licensor only warrants to Licensee that the Software will perform according to the features mentioned in our website and the manual (included in the downloadable installed file), and to the best of Licensor’s knowledge Licensee’s use of this Software according to the manual is not an infringement of any third party’s intellectual property rights. To the extent permitted by law, THE ABOVE-STATED LIMITED WARRANTY REPLACES ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, AND LICENSOR DISCLAIMS ALL IMPLIED WARRANTIES INCLUDING ANY IMPLIED WARRANTY OF TITLE, MERCHANTABILITY, NONINFRINGEMENT, OR OF FITNESS FOR A PARTICULAR PURPOSE. No agent of Licensor is authorized to make any other warranties or to modify this limited warranty.
+
+5. The Licensee’s remedy if the Software does not work according to the warranty stated in the previous paragraph is to contact the Licensor by email, provide details of the complaint or problem together with the screenshot of the error message. The Licensor commits to fix the problem but if after exhausting best efforts to address the Licensee’s complaint or problem, the Licensor will grant refund
+6. Notwithstanding the foregoing, LICENSOR IS NOT LIABLE TO LICENSEE FOR ANY DAMAGES, INCLUDING COMPENSATORY, SPECIAL, INCIDENTAL, EXEMPLARY, PUNITIVE, OR CONSEQUENTIAL DAMAGES, CONNECTED WITH OR RESULTING FROM THIS LICENSE AGREEMENT OR LICENSEE’S USE OF THIS SOFTWARE. Furthermore, the Licensee agrees to defend and indemnify Licensor and hold Licensor harmless from all claims, losses, damages, complaints, or expenses connected with or resulting from Licensee’s business operations. This also applies to those who downloaded the Software for trial or evaluation basis.
+7. Licensor has the right to terminate this License Agreement and Licensee’s right to use this Software upon any material breach by Licensee.
+8. Licensee agrees to return to Licensor or to destroy all copies of the Software upon termination of the License.
+9. This License Agreement is the entire and exclusive agreement between Licensor and Licensee regarding this Software. This License Agreement replaces and supersedes all prior negotiations, dealings, and agreements between Licensor and Licensee regarding this Software.
+10. This License Agreement is governed by the law of the USA.
+11. The Licensor may give out updates of the Software to registered Licensees, which the Licensee has the option to avail or not. In such case, the terms and conditions of this Agreement may change and the availment of the update signifies the agreement of the Licensee to such new terms and conditions.
+
+
+
+
+
+
+
+
+
+

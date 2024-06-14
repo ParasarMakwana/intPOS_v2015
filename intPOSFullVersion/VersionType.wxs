@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<!-- TODO: Put your code here. -->
+    <CustomAction Id="CA_SET_TO_A" Property="P" Value="[AA]" />
+    <CustomAction Id="CA_SET_TO_B" Property="P" Value="[BB]" />
+    
+    <UI Id="VersionTypeUI">
+
+      <Property Id="RadioButtonGroupValue" Value="USE_A" />
+      <TextStyle Id="TahomaHeader1" FaceName="Tahoma" Size="14" Bold="yes" />
+      <TextStyle Id="TahomaNormal1" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="TahomaBig1" FaceName="Tahoma" Size="22" Bold="yes"  />
+
+      <Dialog Id="VersionType" Width="600" Height="500" Title="Product Version">
+        <Control Id="background" Type="Bitmap" Text="bgPic" Height="500" Width="600" X="0" Y="0" TabSkip="no" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="20" Y="20" Width="50" Height="50" TabSkip="no" Text="bgBanner" />
+        <Control Id="introText"  Type="Text" X="100" Y="30" Width="350" Height="60" Transparent="yes" Text="{\TahomaBig1}Select Product Version" />
+
+        <Control Id="MyRadioButton" Type="RadioButtonGroup" Sunken="yes" X="50" Y="100" Width="500" Height="300" Property="RadioButtonGroupValue">
+          <RadioButtonGroup Property="RadioButtonGroupValue">
+            <RadioButton Value="USE_A" Text="{\TahomaHeader1}Demo Evaluation Version" X="50" Y="80" Width="350" Height="30"/>
+            <RadioButton Value="USE_B" Text="{\TahomaHeader1}Full Version" X="50" Y="120" Width="350" Height="30"/>
+          </RadioButtonGroup>
+        </Control>
+
+        <Control Id="Next" Type="PushButton" X="304" Y="460" Width="56" Height="17" Default="yes" Text="Next">
+          <!--<Publish Event="DoAction" Value="CA_SET_TO_A">R="USE_A"</Publish>
+          <Publish Event="DoAction" Value="CA_SET_TO_B">R="USE_B"</Publish>-->
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+
+        <Control Id="Cancel" Type="PushButton" X="236" Y="460" Width="56" Height="17" Cancel="yes" Text="Back">
+          <Publish Event="EndDialog" Value="Exit"></Publish>
+        </Control>
+      </Dialog>
+
+    </UI>
+   
+    <InstallUISequence>
+      <Show Dialog="VersionType" After="LicenseAgreement" />
+    </InstallUISequence>
+    
+	</Fragment>
+</Wix>
